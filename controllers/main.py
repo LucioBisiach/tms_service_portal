@@ -57,8 +57,8 @@ class CustomerPortal(CustomerPortal):
         domain = [('supplier', '=', partner_id.id)]
         
         searchbar_sortings = {
-            'date': {'label': _('More Recent'), 'order': 'create_date desc'},
-            'name': {'label': _('Name'), 'order': 'name'},
+            'date': {'label': _('Mas Recientes'), 'order': 'create_date desc'},
+            'name': {'label': _('Nombre'), 'order': 'name'},
         }
         if not sortby:
             sortby = 'date'
