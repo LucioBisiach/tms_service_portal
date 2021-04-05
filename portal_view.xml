@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_home_services" name="Portal My Home : Servicios" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="debt_line_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Servicios</t>
+                <t t-set="url" t-value="'/my/service_lines'"/>
+                <t t-set="count" t-value="debt_line_count"/>
+            </t>
+        </xpath>
+    </template>
+
+
+    <template id="portal_my_home_menu_services" name="Portal layout : Servicios Realizados" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'service'" t-attf-class="breadcrumb-item #{'active ' if not service_lines else ''}">
+                <a t-if="service_lines">Servicios Realizados</a>
+                <t t-else="">Servicios Realizados</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_service_lines" name="Mis Servicios">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Servicios</t>
+            </t>
+            <t t-if="not service_lines">
+                <p>No hay servicios realizados.</p>
+            </t>
+            <t t-if="service_lines" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Material</th>
+                        <th>Fecha/Hora Inicio</th>
+                        <th>Fecha/Hora Fin</th>
+                        <th>Localidad de Carga</th>
+                        <th>Localidad de Descarga</th>
+                    </tr>
+                </thead>
+                <t t-foreach="service_lines" t-as="service">
+                    <tr>
+                        <td>
+                            <a t-att-href="'/my/service_lines/'+str(service.id)">
+                                <span t-esc="service.label_service"/>
+                            </a>
+                        </td>
+                        <td>
+                            <span t-esc="service.date_start"/>
+                        </td>
+                        <td>
+                            <span t-esc="service.date_stop"/>
+                        </td>
+                        <td>
+                            <span t-foreach="service.location_load" t-as="l" t-esc="l.name"/>
+                        </td>
+                        <td>
+                            <span t-foreach="service.location_download" t-as="l" t-esc="l.name"/>
+                        </td>
+                        <!-- <td><p t-foreach="service_lines.location_download" t-as="l"><span t-esc="l.name"/></p></td> -->
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+
+
+
+
+    <template id="service_lines_page" name="Detalle">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <h5>
+			<span><strong>Material:</strong></span>
+			<span t-field="service_order.label_service"/>
+		    </h5>
+		    <h6 class="mb-0">
+			<span><strong>Numero de Servicio: </strong></span>
+			<span t-field="service_order.name"/> 
+		    </h6>
+		</t>
+		<t t-set="card_body">
+		    <div t-if="service_order.supplier" class="col-12 col-md-6 mb-2 mb-md-0">
+                        <h6><strong>Proveedor</strong></h6>
+                        <div class="row">
+                            <div class="col pl-sm-0">
+                                <address t-field="service_order.supplier"
+                                    t-options='{"widget": "contact", "fields": ["name", "email", "phone"]}' />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="informations" class="row mt32 mb32">
+                        <div class="col-3 col-md-3 bm-2">
+                            <strong>Fecha y hora de Inicio</strong>
+                            <p t-field="service_order.date_start"
+                                class="m-0" />
+                        </div>
+                        <div class="col-3 col-md-3 bm-2">
+                            <strong>Fecha y hora de Fin:</strong>
+                            <p t-field="service_order.date_stop"
+                                class="m-0" />
+                        </div>
+                        <div class="col-3 col-md-3 bm-2">
+                            <strong>Localidad de Carga</strong>
+                            <p t-foreach="service_order.location_load" t-as="l" t-field="l.name"
+                                class="m-0" />
+                        </div>
+                        <div class="col-3 col-md-3 bm-2">
+                            <strong>Localidad de Descarga</strong>
+                            <p t-foreach="service_order.location_download" t-as="l" t-field="l.name"
+                                class="m-0" />
+                        </div>
+		    </div>
+                    <ul class="nav nav-tabs nav-tabs-inline graph-tabs"
+                        role="tablist">
+                        <li class="nav-item">
+                            <a aria-controls="parts" href="#parts"
+                                class="nav-link active" role="tab"
+                                data-toggle="tab">Remitos</a>
+                        </li>
+		    </ul>
+		    <div class="row">
+                        <div class="col-md-12 mb8">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active"
+                                    id="parts">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-sm">
+                                                <thead>
+						    <th>N° de Remito</th>
+						    <th>Adjunto</th>
+						    <th>Nota</th>
+					        </thead>
+						<tbody>
+						    <tr t-foreach="service_order.lst_documents" t-as="line">
+							<td>
+							    <p><span t-field="line.name"/></p>
+							</td>
+						        <td>
+						    	    <a target="_blank"><i class="fa fa-download"/></a>
+						        </td>
+							<td>
+							    <p><span t-field="line.note"/></p>
+							</td>
+						    </tr>
+						</tbody>
+					    </table>
+					</div>
+				    </div>
+				</div>
+			    </div>
+			</div>
+		    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>
+                                <strong>Notas:</strong><br/>
+                                <span t-field="service_order.note" />
+                            </p>
+                        </div>
+                    </div>
+		</t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
