@@ -3,10 +3,10 @@
 
     <template id="portal_my_home_services" name="Portal My Home : Servicios" inherit_id="portal.portal_my_home" priority="20">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-if="debt_line_count" t-call="portal.portal_docs_entry">
+            <t t-if="services_line_count" t-call="portal.portal_docs_entry">
                 <t t-set="title">Servicios</t>
                 <t t-set="url" t-value="'/my/service_lines'"/>
-                <t t-set="count" t-value="debt_line_count"/>
+                <t t-set="count" t-value="services_line_count"/>
             </t>
         </xpath>
     </template>
@@ -20,6 +20,7 @@
             </li>
         </xpath>
     </template>
+
 
     <template id="portal_my_service_lines" name="Mis Servicios">
         <t t-call="portal.portal_layout">
@@ -60,14 +61,12 @@
                         <td>
                             <span t-foreach="service.location_download" t-as="l" t-esc="l.name"/>
                         </td>
-                        <!-- <td><p t-foreach="service_lines.location_download" t-as="l"><span t-esc="l.name"/></p></td> -->
+                        
                     </tr>
                 </t>
             </t>
         </t>
     </template>
-
-
 
 
 
@@ -172,3 +171,4 @@
     </template>
 
 </odoo>
+

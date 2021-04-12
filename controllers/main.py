@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import binascii
 from datetime import date
@@ -30,13 +29,11 @@ class CustomerPortal(CustomerPortal):
         else:
             # En caos de que no pertenezca a ninguna compañia, imprime el ID de la compañia
             partner_id = request.env.user.partner_id
-            #logger.warning('[DEBUG #3] values %s'%(partner_id))
 
         ServiceLine = request.env['services.tms']
         services_line_count = ServiceLine.sudo().search_count([('supplier', '=', partner_id.id)])
 
         values['services_line_count'] = services_line_count
-        # logger.warning('[DEBUG #5 values %s'%(services_line_count))
         return values
 
 
@@ -44,7 +41,6 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/service_lines', '/my/service_lines/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_service_lines(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
-        # logger.warning('[DEBUG #2 values %s'%(values)) 
 
         partner = request.env.user.partner_id
         ServiceLine = request.env['services.tms']
