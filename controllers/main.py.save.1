@@ -21,23 +21,41 @@ class CustomerPortal(CustomerPortal):
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
 
+        # Pregunta si el usuario pertenece a una compañia (Esto nos diferencia entre individuo y compañia)
+        #if request.env.user.partner_id.parent_id:
+            # Pasa el parametro de la compañia a la que pertenece si es un usuario
+    	#    partner_id = request.env.user.partner_id.parent_id
+            #logger.warning('[DEBUG #2] values %s'%(partner_id))
+        #else:
+            # En caos de que no pertenezca a ninguna compañia, imprime el ID de la compañia
+        #    partner_id = request.env.user.partner_id
+
+        #ServiceLine = request.env['services.tms']
+        #services_line_count = ServiceLine.sudo().search_count([('supplier', '=', partner_id.id)])
+
         lst_categorias = []
         ServiceLine = request.env['services.tms']
 
         if request.env.user.partner_id.company_type == 'company':
-            partner_id = request.env.user.partner_id.parent_id
+            partner_id = request.env.user.partner_id
+        
+            #ServiceLine = request.env['services.tms']
             services_line_count = ServiceLine.sudo().search_count([('supplier', '=', partner_id.id)])
 
+            values['services_line_count'] = services_line_count
         else:
             for categoria in request.env.user.partner_id.category_id:
                 lst_categorias.extend([categoria.name])
 
             if "Administrador Logistico" in lst_categorias:
-                partner_id = request.env.user.partner_id.parent_id
+                partner_id = request.env.user.partner_id
+
                 services_line_count = ServiceLine.sudo().search_count([('supplier', '=', partner_id.id)])
 
             if "Chofer" in lst_categorias and "Administrador Logistico" not in lst_categorias:
                 partner_id = request.env.user.partner_id
+        
+                ServiceLine = request.env['services.tms']
                 services_line_count = ServiceLine.sudo().search_count([('employee_third', '=', partner_id.id)])
 
         values['services_line_count'] = services_line_count
@@ -48,26 +66,17 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/service_lines', '/my/service_lines/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_service_lines(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
-        lst_categorias = []
 
+        partner = request.env.user.partner_id
         ServiceLine = request.env['services.tms']
 
-        if request.env.user.partner_id.company_type == 'company':
+        if request.env.user.partner_id.parent_id:
             partner_id = request.env.user.partner_id.parent_id
-            domain = [('supplier', '=', partner_id.id)]
-
         else:
-            for categoria in request.env.user.partner_id.category_id:
-                lst_categorias.extend([categoria.name])
-
-            if "Administrador Logistico" in lst_categorias:
-                partner_id = request.env.user.partner_id.parent_id
-                domain = [('supplier', '=', partner_id.id)]
-
-            if "Chofer" in lst_categorias and "Administrador Logistico" not in lst_categorias:
-                partner_id = request.env.user.partner_id
-                domain = [('employee_third', '=', partner_id.id)]
-
+            partner_id = request.env.user.partner_id
+        
+        domain = [('supplier', '=', partner_id.id)]
+        
         searchbar_sortings = {
             'date': {'label': _('Mas Recientes'), 'order': 'create_date desc'},
             'name': {'label': _('Nombre'), 'order': 'name'},
