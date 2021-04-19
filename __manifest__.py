@@ -6,7 +6,8 @@
     'category': 'Info Supplier',
     'depends': ['portal','tms'],
     'data': [
-        'portal_view.xml',
+        'views/portal_view.xml',
+        'views/res_users_view.xml'
         #'security/ir.model.access.csv',
 
     ],
