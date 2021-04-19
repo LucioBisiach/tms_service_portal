@@ -71,14 +71,14 @@ class CustomerPortal(CustomerPortal):
                 domain = [('employee_third', '=', partner_id.id)]
 
         searchbar_sortings = {
-            'name': {'label': _('date_start'), 'order': 'name'},
+            'date': {'label': _('Reciente'), 'order': 'create_date desc'},
+            'name': {'label': _('Nombre'), 'order': 'name'},
         }
 
         if not sortby:
             sortby = 'name'
-        sort_order = searchbar_sortings[sortby]['label']
+        sort_order = searchbar_sortings[sortby]['order']
 
-        #archive_groups = self.sudo()._get_archive_groups('account.debt.line', domain)
         if date_begin and date_end:
             domain += [('date_start', '>', date_begin), ('date_end', '<=', date_end)]
 
@@ -88,7 +88,7 @@ class CustomerPortal(CustomerPortal):
 
 
         pager = portal_pager(
-            url="/my/service_line",
+            url="/my/service_lines",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
             total=service_line_count,
             page=page,
@@ -112,10 +112,15 @@ class CustomerPortal(CustomerPortal):
         return request.render("tms_service_portal.portal_my_service_lines", values)
 
 
-    @http.route(['/my/service_line/<int:service_lines>'], type='http', auth="user", website=True)
-    def service_lines_page(self, service_lines=None, ):
-        service_lines = request.env['services.tms'].browse([service_lines])
-        #logger.warning('SERVICE LINES /MY/SERVICE_LINES %s'%(service_lines))
+    @http.route(['/my/service_lines/<int:service_lines_id>'], type='http', auth="user", website=True)
+    def service_lines_page(self, service_lines_id=None):
+
+        lst_categorias = []
+
+
+        service_lines = request.env['services.tms'].browse([service_lines_id])
+
+        logger.warning('[DEBUG #5] values %s'%(service_lines))
 
         try:
             service_lines.check_access_rights('read')
@@ -126,3 +131,5 @@ class CustomerPortal(CustomerPortal):
         return request.render("tms_service_portal.service_lines_page",{
             'service_lines': service_lines.sudo(),
         })
+
+

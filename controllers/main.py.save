@@ -88,7 +88,7 @@ class CustomerPortal(CustomerPortal):
 
 
         pager = portal_pager(
-            url="/my/service_line",
+            url="/my/service_lines",
             url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
             total=service_line_count,
             page=page,
@@ -111,29 +111,21 @@ class CustomerPortal(CustomerPortal):
 
         return request.render("tms_service_portal.portal_my_service_lines", values)
 
-    @http.route(['/my/service_line/<int:service_lines>'], type='http', auth="user", website=True)
+
+    @http.route(['/my/service_lines/<int:service_lines_id>'], type='http', auth="user", website=True)
     def service_lines_page(self, service_lines_id=None, access_token=None, **kw):
 
-        #service_lines = request.env['services.tms'].browse([service_lines])
+        service_lines = request.env['services.tms'].browse([service_lines_id])
 
-        #try:
-        #    service_lines.check_access_rights('read')
-        #    service_lines.check_access_rule('read')
-        #except AccessError:
-        #    return request.website.render('website.403')
-
-        #return request.render("tms_service_portal.service_lines_page",{
-        #    'service_lines': service_lines.sudo(),
-        #})
-
-        service_sudo = self._document_check_access(
-            'services.tms', service_lines_id, access_token
-        )
-
+        logger.warning('[DEBUG #5] values %s'%(service_lines))
+        
         values = {
-            'service_order': service_sudo,
+            'service_lines': service_lines,
             'page_name': 'service_lines',
         }
+
+        logger.warning('[DEBUG #6] values %s'%(values))
+
         return request.render(
-	    "tms_service_portal.service_lines_page", values
+            "tms_service_portal.service_lines_page", values
         )
