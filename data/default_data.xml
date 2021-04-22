@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="default_metodo_pago_portal_tms_echk_30" model="metodo.pago.services.tms">
+        <field name="name">E-Check - 30 Días</field>
+    </record>
+
+ 
+    <record id="default_metodo_pago_portal_tms_echk_15" model="metodo.pago.services.tms">
+        <field name="name">E-Check - 15 Días</field>
+    </record>
+
+
+    <record id="default_metodo_pago_portal_tms_ef_chk_30" model="metodo.pago.services.tms">
+        <field name="name">Adelanto Efectivo + E-Check 30 días</field>
+    </record>
+
+
+    <record id="default_metodo_pago_portal_tms_comb_echk_30" model="metodo.pago.services.tms">
+        <field name="name">Combustible + E-Check 30 días</field>
+    </record>
+
+
+    <record id="default_metodo_pago_portal_tms_chk_30" model="metodo.pago.services.tms">
+        <field name="name">Cheque Físico - 30 días</field>
+    </record>
+
+
+    <record id="default_metodo_pago_portal_tms_ef_desc" model="metodo.pago.services.tms">
+        <field name="name">Efectivo en la Descarga</field>
+    </record>
+
+
+    <record id="default_metodo_pago_portal_tms_echk_30" model="metodo.pago.services.tms">
+        <field name="name">Transferencia a 30 días</field>
+    </record>
+
+    <record id="default_metodo_pago_portal_tms_echk_45" model="metodo.pago.services.tms">
+        <field name="name">Transferencia a 45 días</field>
+    </record>
+
+    <record id="default_metodo_pago_portal_tms_echk_15" model="metodo.pago.services.tms">
+        <field name="name">Transferencia a 15 días</field>
+    </record>
+
+</odoo>

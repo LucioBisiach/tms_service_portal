@@ -7,8 +7,10 @@
     'depends': ['portal','tms'],
     'data': [
         'views/portal_view.xml',
-        'views/res_users_view.xml'
-        #'security/ir.model.access.csv',
+        'views/res_users_view.xml',
+	'views/tms_view.xml',
+        'data/default_data.xml',
+        'security/ir.model.access.csv',
 
     ],
     'demo': [
