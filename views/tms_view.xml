@@ -11,18 +11,25 @@
 		<xpath expr="//page[1]" position="after">
                     <page string="Publicacion" attrs="{'invisible': [('outsourced_service','=',False)]}">
 			<group>
-			    <group>				
+			    <group>
+				<field name="estado_publicacion" string="Estado Publicacion"/>
 				<field name="material" string="Material Transportado"/>
 				<field name="metodo_pago" string="Metodo de Pago"/>
                                 <field name="tarifa" string="Tarifa"/>
-				<field name="comentarios" placeholder="Comentarios..."/>
+				<field name="currency_id" string="Moneda" invisible="True"/>
+				<button name="generar_texto_whatsapp" type="object" class="btn btn-success" string="Generar Texto Whatsapp"/>
 			    </group>
 			    <group>
                                 <field name="date_start" string="Fecha"/>
 				<field name="location_load" string="Origen" widget="many2many_tags"/>
 				<field name="location_download" string="Destino" widget="many2many_tags"/>
 				<field name="clientes" string="Clientes"/>
+				<field name="comentarios" placeholder="Comentarios..."/>
+				
 			    </group>
+			    <div>
+				<field name="texto_whatsapp"/>
+			    </div>
 			</group>
 		    </page>
                 </xpath>

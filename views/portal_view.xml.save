@@ -357,7 +357,7 @@
                         <span t-field="post_lines.name" />
 
                         <t>
-                            <a class="ml8 pull-right mr8" t-attf-href="https://wa.me/5493416429356" target="_blank"><button class="btn btn-success"><i class="fa fa-whatsapp " style="font-size: 15px;" /> Reservar</button></a>
+                            <a class="ml8 pull-right mr8" t-attf-href="https://wa.me/5493416429356?" target="_blank"><button class="btn btn-success"><i class="fa fa-whatsapp " style="font-size: 15px;" /> Reservar</button></a>
                        </t>
                         <!--<a t-attf-href="https://wa.me/543416148550">
                             <button class="btn btn-success ml8 pull-right mr8" type="object">

@@ -23,11 +23,14 @@ class CustomerPortal(CustomerPortal):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
 
         lst_categorias = []
+
         ServiceLine = request.env['services.tms']
+
 
         if request.env.user.partner_id.company_type == 'company':
             partner_id = request.env.user.partner_id.parent_id
             services_line_count = ServiceLine.sudo().search_count([('supplier', '=', partner_id.id)])
+
         else:
             for categoria in request.env.user.partner_id.category_id:
                 lst_categorias.extend([categoria.name])
